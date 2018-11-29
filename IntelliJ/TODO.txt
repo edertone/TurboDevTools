@@ -1,0 +1,1 @@
+- Copy same folder structure from eclipse and create the templates for IntellIJ IDE.
