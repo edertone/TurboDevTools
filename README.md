@@ -1,17 +1,18 @@
-# IDE Tools
-Some tools to improve your IDE experience
+# DEV Tools
 
+Some tools to improve your developer experience
 
 #### Repository contents
-This repository is structured into several folders, where first level ones are named as the IDE files they contain. For example there's an Eclipse folder containing all the Eclipse IDE related files, another containing IntelliJ files, etc...
 
+This repository is structured into several folders, grouping different categories of interest like IDEs, Virtualization, etc. 
 
-#### IDE folder
+#### IDEs folder
 
-Each IDE folder is subdivided into several folders:
+Each subfolder is named as the IDE it represents and contains following categories:
+
 - "Code-Formatters" which contains IDE code formatting rules for several languages
 - "Syntax coloring" which contains unified IDE color themes to have the same syntax coloring on different languages
 
-#### More information
+#### Virtualization
 
-Specific information about how to use each template, rule or setup can be find on Readme.md files located on each template
+Contains resources related to VMWare virtual machines, docker images, and more
