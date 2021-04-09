@@ -48,6 +48,8 @@ Now that we have setup all the data to run our websites, it is time to launch th
 ```
 docker run --name=php7-apache-vhosts --restart always -d -p 80:80 -p 443:443 -v /usr/docker-persistent/virtualhosts:/var/www/virtualhosts edertone/php7-apache-vhosts:latest
 ```
+
+This will launch a docker container that will respawn automatically if your system reboots, with a volume mounted to the docker-persistent virtualhosts folder and using standard http 80 and https 443 ports. Your websites should be visible now via http and https.
   
 ## Apendix: Useful docker cmd commands
 
