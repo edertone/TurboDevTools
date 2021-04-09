@@ -42,6 +42,8 @@ A single user approach is used: All the folders and files must be owned by www-d
 </IfModule>
 ```
 
+**VERY IMPORTANT**: MAKE SURE YOU ALWAYS UPLOAD FILES TO THE VIRTUAL HOSTS AS THE www-data USER.
+
 ## Run the docker image
 
 Now that we have setup all the data to run our websites, it is time to launch the docker image that will be used to render them. Move into linux cmd and run the following command:
