@@ -11,7 +11,7 @@ This docker image contains a php + apache production ready server. After setting
 
 Before running the docker container, we must create a structure of folders that will be used to setup the virtual hosts and provide the files for their respective websites. This structure will be read by the docker container to feed the php and apache services.
 
-A single user approach is used: All the folders and files must be owned by www-data which is the apache server user, except the root one which will be owned by root. ** Remember this when uploading files to your server**. Be careful also when operating with the websites cause there is no isolation between the virtualhosts, everything is managed by the same user. This is a limitation but also a simplification. Let's create the required folders and files:
+A single user approach is used: All the folders and files must be owned by www-data which is the apache server user, except the root one which will be owned by root. **Remember this when uploading files to your server**. Be careful also when operating with the websites cause there is no isolation between the virtualhosts, everything is managed by the same user. This is a limitation but also a simplification. Let's create the required folders and files:
 
   - Create a folder **/usr/docker-persistent** (owned by root)
 
