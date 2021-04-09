@@ -1,4 +1,4 @@
-# note that this is an ubuntu image, so configurations and folders are specific to this distribution
+# note that this is a DEBIAN image, so configurations and folders are specific to this distribution
 FROM php:7.4.16-apache
 
 # Enable required apache modules: SSL, mod_rewrite, mod_expires, mod_headers, mod_deflate
