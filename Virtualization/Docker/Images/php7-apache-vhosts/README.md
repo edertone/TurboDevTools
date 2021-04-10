@@ -24,6 +24,7 @@ A single user approach is used: All the folders and files must be owned by www-d
   	      
       - **htdocs** Folder where the web files must be placed, basically the root www folder for that domain.
       - **com_domain.conf** File with the apache configuration for this specific virtualhost:
+
 ```
 <VirtualHost *:80>
 	ServerName domain.com
@@ -55,10 +56,13 @@ This will launch a docker container that will respawn automatically if your syst
 Here's a list of docker commands to interact with this image:
 
   - **Access the bash for the docker container to run cmd commands inside it**
+  
     `docker exec -it php7-apache-vhosts bash`
 	
   - **Restart the container**
+  
     `docker restart php7-apache-vhosts`
 
   - **Refresh all the virtualhosts when a new one is added or removed** (must be called inside the container bash)
+  
 	`/usr/local/bin/startup.sh`
