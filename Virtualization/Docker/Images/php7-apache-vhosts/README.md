@@ -1,4 +1,3 @@
-
 # PHP 7, Apache 2.4 docker image with volume mounted virtual hosts support
 
 This docker image contains a php + apache production ready server. After setting it up, we will obtain a fully operative web server with php runtime configured to use multiple independent virtualhosts, so we will be able to host several websites with a single docker container.
