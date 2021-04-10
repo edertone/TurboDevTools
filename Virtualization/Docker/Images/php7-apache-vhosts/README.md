@@ -1,6 +1,14 @@
 # PHP 7, Apache 2.4 docker image with volume mounted virtual hosts support
 
 This docker image contains a php + apache production ready server. After setting it up, we will obtain a fully operative web server with php runtime configured to use multiple independent virtualhosts, so we will be able to host several websites with a single docker container.
+
+## Features
+
+  - Php 7.4.16
+  - Apache 2.4.38
+  - Virtualhosts support ready to use
+  - Unified logs for all the virtual hosts
+  - Http and Https enabled
   
 ## Pre requisites
 
@@ -55,14 +63,27 @@ This will launch a docker container that will respawn automatically if your syst
 
 Here's a list of docker commands to interact with this image:
 
-  - **Access the bash for the docker container to run cmd commands inside it**
+  - **Update the local image and running container with the latest on repository and restart**
+    
+	```
+	docker stop php7-apache-vhosts
+	docker rm php7-apache-vhosts
+	docker pull edertone/php7-apache-vhosts:latest
+	docker run --name=php7-apache-vhosts --restart always -d -p 80:80 -p 443:443 -v /usr/docker-persistent/virtualhosts:/var/www/virtualhosts edertone/php7-apache-vhosts:latest
+    ```
+    	
+  - **Restart the running container**
+  
+    `docker restart php7-apache-vhosts`
+	
+  - **Access the bash for the docker container to directly run cmd commands inside it**
   
     `docker exec -it php7-apache-vhosts bash`
 	
-  - **Restart the container**
-  
-    `docker restart php7-apache-vhosts`
-
   - **Refresh all the virtualhosts when a new one is added or removed** (must be called inside the container bash)
   
 	`/usr/local/bin/startup.sh`
+
+### Donate
+	
+[![Donate](https://raw.githubusercontent.com/edertone/DEV-Tools/master/Virtualization/Docker/Images/php7-apache-vhosts/donate-button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=53MJ6SY66WZZ2&lc=ES&item_name=php7-apache-vhosts&no_note=0&cn=A%c3%b1adir%20instrucciones%20especiales%20para%20el%20vendedor%3a&no_shipping=2&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
