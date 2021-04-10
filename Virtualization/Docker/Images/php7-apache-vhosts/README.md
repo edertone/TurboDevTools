@@ -6,7 +6,8 @@ This docker image contains a php + apache production ready server. After setting
 
   - Php 7.4.16
   - Apache 2.4.38
-  - Virtualhosts support ready to use
+  - Php and apache configured for optimal performance
+  - Virtualhosts ready to use: Host as many webistes as yu want with a single docker container
   - Unified logs for all the virtual hosts
   - Http and Https enabled
   
