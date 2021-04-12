@@ -32,12 +32,12 @@ RUN openssl genrsa -des3 -passout pass:1234 -out server.pass.key 2048 && \
 RUN a2enconf global-custom.conf
 
 # /usr/local/etc/php/conf.d folder contains the php.ini configuration files that will be loaded in alphabetical order.
-# First we will copy the production .ini template to this folder, and then add our local custom ini to override it
+# First we will copy the production .ini template to this folder, and then add our local custom ini to override our custom values
 # We can see the loaded ini files if we call phpinfo() on a php file, by searching: Loaded Configuration File
 RUN mv /usr/local/etc/php/php.ini-production /usr/local/etc/php/conf.d/php.ini
 COPY php/php-custom.ini /usr/local/etc/php/conf.d/php2.ini
 
-# Copy the startup script that will dinamically initialize the virtual hosts + start apache
+# Copy the startup script that will dinamically initialize the virtual hosts and start apache
 COPY scripts/startup.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/startup.sh
 
