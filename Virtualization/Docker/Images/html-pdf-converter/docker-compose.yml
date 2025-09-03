@@ -1,0 +1,18 @@
+services:
+
+  html-pdf-converter:
+  
+    # Tell Docker Compose to build the image from the Dockerfile in the current directory ('.')
+    build: .
+    
+    # Specify the name for the image that will be built
+    image: html-pdf-converter
+    
+    # Mount the current host directory (.) into the /data directory inside the container.
+    # This makes the files on your host machine available inside the container.
+    volumes:
+      - .:/data
+      
+    # Set the working directory for any commands run in the container.
+    # This ensures commands are executed from the directory where your files are.
+    working_dir: /data

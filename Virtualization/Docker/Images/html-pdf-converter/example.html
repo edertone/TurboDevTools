@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker PDF Test</title>
+    <style>
+        body {
+            font-family: 'Liberation Sans', sans-serif;
+            margin: 2em;
+            color: #333;
+        }
+        h1 {
+            color: #003366;
+            border-bottom: 2px solid #003366;
+        }
+        .container {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .highlight {
+            background-color: #e6f7ff;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDF Generation Report</h1>
+    <div class="container">
+        <p>This PDF was successfully generated from an HTML file using a <span class="highlight">Docker container</span>.</p>
+        <p>The container runs a headless instance of Chromium on a base Ubuntu installation, proving that no graphical interface is needed.</p>
+        <p>Generated on: <script>document.write(new Date().toUTCString());</script></p>
+    </div>
+</body>
+</html>
