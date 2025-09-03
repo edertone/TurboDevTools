@@ -24,8 +24,6 @@ What does this do:
 * `example.html example.pdf`: These are the arguments passed to your container. They override the default `CMD` and are picked up by your `entrypoint.sh` script as the input and output filenames.
 
 After running the command, you will find a new file named `example.pdf` in your directory.
-
-Using Docker Compose makes your command-line shorter and keeps all your build and run configuration neatly organized in one YAML file.
   
 ## Apendix: How to rebuild the full image from scratch
 
