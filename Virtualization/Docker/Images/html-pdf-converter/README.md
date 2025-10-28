@@ -20,7 +20,7 @@ docker-compose run --rm html-pdf-converter example.html example.pdf
 What does this do:
 * `docker-compose run`: This is the key command. It starts a one-off instance of a service for a specific task.
 * `--rm`: This flag is important. It automatically removes the container after it finishes its job, keeping your system clean.
-* `converter`: This specifies which service from your `docker-compose.yml` file you want to run.
+* `html-pdf-converter`: This specifies which service from your `docker-compose.yml` file you want to run.
 * `example.html example.pdf`: These are the arguments passed to your container. They override the default `CMD` and are picked up by your `entrypoint.sh` script as the input and output filenames.
 
 After running the command, you will find a new file named `example.pdf` in your directory.
