@@ -47,5 +47,11 @@ sct_setup_swap_if_not_enabled() {
 # Usage: start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
 sct_start_docker_compose_with_env_vars() {
     echo -e "\nStarting Docker containers..."
-    env "$@" docker compose up -d --quiet-pull
+    if ! env "$@" docker compose up -d --quiet-pull > /dev/null; then
+        echo "Error: Failed to start Docker containers."
+        docker compose logs
+        return 1
+    fi
+    echo -e "\nDocker containers launched. Status:"
+    docker compose ps
 }
