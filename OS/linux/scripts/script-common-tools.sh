@@ -145,21 +145,41 @@ sct_prompt_for_variable_or_default() {
 }
 
 # Create a folder if it does not exist and set its permissions and ownership
-# Usage: create_folder_and_set_permisions "/path/to/folder" "permissions" "user:group"
-sct_create_folder_and_set_permisions() {
+# Usage: sct_create_dir_if_missing_and_set_permisions "/path/to/folder" "permissions" "user:group"
+sct_create_dir_if_missing_and_set_permisions() {
     local dir="$1"
     local perm="$2"
     local userandgroup="$3"
 
     if [ ! -d "$dir" ]; then
         mkdir -p "$dir"
-    fi
-    
+        fi
+
     chown -R "$userandgroup" "$dir" || { echo "ERROR: Failed to set ownership for $dir"; return 1; }
     chmod -R "$perm" "$dir" || { echo "ERROR: Failed to set permissions for $dir"; return 1; }
-    
-    echo "Folder '$dir' created (if not existing) and permissions set to '$perm' for '$userandgroup'."
+
+    echo "Folder '$dir' created for '$userandgroup' (if not existing) and permissions set to '$perm'."
 }
+
+
+# Create a file if it does not exist and set its permissions and ownership
+# Usage: sct_create_file_if_missing_and_set_permisions "/path/to/file" "permissions" "user:group"
+sct_create_file_if_missing_and_set_permisions() {
+    local file="$1"
+    local perm="$2"
+    local userandgroup="$3"
+
+    if [ ! -f "$file" ]; then
+        mkdir -p "$(dirname "$file")"
+        touch "$file"
+    fi
+
+    chown "$userandgroup" "$file" || { echo "ERROR: Failed to set ownership for $file"; return 1; }
+    chmod "$perm" "$file" || { echo "ERROR: Failed to set permissions for $file"; return 1; }
+
+    echo "File '$file' created for '$userandgroup' (if not existing) and permissions set to '$perm'."
+}
+
 
 # Start Docker containers using docker compose
 # Additional environment variables can be passed as arguments
