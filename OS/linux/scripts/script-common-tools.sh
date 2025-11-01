@@ -53,9 +53,67 @@ sct_install_docker_if_not_exists() {
     fi
 }
 
+# Create and setup a SFTP user
+# important: The SFTP root folder must exist and be owned by root
+# Usage: sct_create_and_setup_sftp_user "username" "password" "group" "sftp_root_folder"
+sct_create_and_setup_sftp_user() {
+    local USERNAME="$1"
+    local USER_PASSWORD="$2"
+    local USER_GROUP="$3"
+    local SFTP_ROOT_FOLDER="$4"
+
+    # Validate input parameters
+    if [ -z "$USERNAME" ] || [ -z "$USER_PASSWORD" ] || [ -z "$USER_GROUP" ] || [ -z "$SFTP_ROOT_FOLDER" ]; then
+        echo "Usage: sct_create_and_setup_sftp_user <username> <password> <group> <sftp_root_folder>"
+        return 1
+    fi
+    
+    # Ensure SFTP_ROOT_FOLDER folder exists and is owned by root
+    if [ ! -d "$SFTP_ROOT_FOLDER" ] || [ "$(stat -c '%U' "$SFTP_ROOT_FOLDER")" != "root" ]; then
+        echo "ERROR: SFTP root folder '$SFTP_ROOT_FOLDER' must exist and be owned by root."
+        return 1
+    fi
+    
+    echo "Setting up SFTP user '$USERNAME:$USER_GROUP' with sftp root folder '$SFTP_ROOT_FOLDER'..."
+    
+    # Create group if it does not exist
+    if ! getent group "$USER_GROUP" > /dev/null; then
+        groupadd "$USER_GROUP" > /dev/null
+    fi
+    
+    # Create user if it does not exist
+    if ! id -u "$USERNAME" >/dev/null 2>&1; then
+        adduser --system --ingroup "$USER_GROUP" --shell=/usr/sbin/nologin "$USERNAME" > /dev/null
+    else
+        echo "ERROR: User '$USERNAME' already exists."
+        return 1
+    fi
+
+    # Set user password
+    echo "$USERNAME:$USER_PASSWORD" | chpasswd > /dev/null
+    
+    # Configure SFTP access in sshd_config file
+    local sftp_config="    
+Match User $USERNAME
+    ForceCommand internal-sftp
+    ChrootDirectory $SFTP_ROOT_FOLDER
+    PasswordAuthentication yes
+    PermitTTY no
+    X11Forwarding no
+    AllowTcpForwarding no
+    AllowAgentForwarding no"
+
+    if ! grep -q "Match User $USERNAME" /etc/ssh/sshd_config; then
+        echo "$sftp_config" >> /etc/ssh/sshd_config
+        systemctl restart ssh
+    fi
+    
+    echo "User sftp '$USERNAME' created successfully."
+}
+
 # Start Docker containers using docker compose
 # Additional environment variables can be passed as arguments
-# Usage: start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
+# Usage: sct_start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
 sct_start_docker_compose_with_env_vars() {
     
     # Export the provided environment variables
