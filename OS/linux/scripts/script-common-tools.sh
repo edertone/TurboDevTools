@@ -144,6 +144,27 @@ sct_prompt_for_variable_or_default() {
     echo "$user_input"
 }
 
+# Get the parent folder name of the current script
+# Only the folder name, not the full path
+# Usage: THIS_SCRIPT_PARENT_FOLDER=$(get_script_parent_folder)
+get_script_parent_folder() {
+    basename "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+}
+
+# Create a folder if it does not exist and set its permissions and ownership
+# Usage: create_folder_and_set_permisions "/path/to/folder" "permissions" "user:group"
+create_folder_and_set_permisions() {
+    local dir="$1"
+    local perm="$2"
+    local userandgroup="$3"
+
+    if [ ! -d "$dir" ]; then
+        mkdir -p "$dir"
+    fi
+    chown -R "$userandgroup" "$dir"
+    chmod -R "$perm" "$dir"
+}
+
 # Start Docker containers using docker compose
 # Additional environment variables can be passed as arguments
 # Usage: sct_start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
