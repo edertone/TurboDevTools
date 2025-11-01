@@ -8,21 +8,6 @@ sct_script_must_run_as_root() {
     fi
 }
 
-# Install Docker CE if not already installed
-sct_install_docker_if_not_exists() {
-    if ! command -v docker &> /dev/null; then
-        echo "Installing Docker CE..."
-        apt-get update > /dev/null
-        apt-get install -y ca-certificates curl gnupg lsb-release > /dev/null
-        install -m 0755 -d /etc/apt/keyrings
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-        apt-get update > /dev/null
-        apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
-        echo "Docker CE installation complete. Version: $(docker --version)"
-    fi
-}
-
 # Setup swap file if not present, with configurable size (e.g., 2G, 2048M)
 # Usage: sct_setup_swap 2G or sct_setup_swap 2048M
 sct_setup_swap_if_not_enabled() {
@@ -42,16 +27,35 @@ sct_setup_swap_if_not_enabled() {
     fi
 }
 
+# Install Docker CE if not already installed
+sct_install_docker_if_not_exists() {
+    if ! command -v docker &> /dev/null; then
+        echo "Installing Docker CE..."
+        apt-get update > /dev/null
+        apt-get install -y ca-certificates curl gnupg lsb-release > /dev/null
+        install -m 0755 -d /etc/apt/keyrings
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+        apt-get update > /dev/null
+        apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null
+        echo "Docker CE installation complete. Version: $(docker --version)"
+    fi
+}
+
 # Start Docker containers using docker compose
 # Additional environment variables can be passed as arguments
 # Usage: start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
 sct_start_docker_compose_with_env_vars() {
-    echo -e "\nStarting Docker containers..."
+    echo -e "\nStarting Docker containers with env .."
+    for env_var in "$@"; do
+        var_name="${env_var%%=*}"
+        echo " $var_name"
+    done
     if ! env "$@" docker compose up -d --quiet-pull > /dev/null; then
         echo "Error: Failed to start Docker containers."
         docker compose logs
         return 1
     fi
-    echo -e "\nDocker containers launched. Status:"
+    echo -e "\n\nDocker containers launched. Status:"
     docker compose ps
 }
