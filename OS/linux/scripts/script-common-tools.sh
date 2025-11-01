@@ -161,8 +161,11 @@ sct_create_folder_and_set_permisions() {
     if [ ! -d "$dir" ]; then
         mkdir -p "$dir"
     fi
-    chown -R "$userandgroup" "$dir"
-    chmod -R "$perm" "$dir"
+    
+    chown -R "$userandgroup" "$dir" || { echo "ERROR: Failed to set ownership for $dir"; return 1; }
+    chmod -R "$perm" "$dir" || { echo "ERROR: Failed to set permissions for $dir"; return 1; }
+    
+    echo "Folder '$dir' created (if not existing) and permissions set to '$perm' for '$userandgroup'."
 }
 
 # Start Docker containers using docker compose
