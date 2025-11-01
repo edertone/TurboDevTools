@@ -147,13 +147,13 @@ sct_prompt_for_variable_or_default() {
 # Get the parent folder name of the current script
 # Only the folder name, not the full path
 # Usage: THIS_SCRIPT_PARENT_FOLDER=$(get_script_parent_folder)
-get_script_parent_folder() {
+sct_get_script_parent_folder() {
     basename "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 }
 
 # Create a folder if it does not exist and set its permissions and ownership
 # Usage: create_folder_and_set_permisions "/path/to/folder" "permissions" "user:group"
-create_folder_and_set_permisions() {
+sct_create_folder_and_set_permisions() {
     local dir="$1"
     local perm="$2"
     local userandgroup="$3"
