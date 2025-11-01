@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if the current script runs as root
-sct_check_script_runs_as_root() {
+sct_script_must_run_as_root() {
     if [ "$EUID" -ne 0 ]; then
         echo "Please run this script as root"
         exit 1
@@ -9,7 +9,7 @@ sct_check_script_runs_as_root() {
 }
 
 # Install Docker CE if not already installed
-sct_install_docker() {
+sct_install_docker_if_not_exists() {
     if ! command -v docker &> /dev/null; then
         echo "Installing Docker CE..."
         apt-get update > /dev/null
@@ -23,15 +23,29 @@ sct_install_docker() {
     fi
 }
 
-# Setup 2GB swap file if no swap is present
-sct_setup_swap() {
+# Setup swap file if not present, with configurable size (e.g., 2G, 2048M)
+# Usage: sct_setup_swap 2G or sct_setup_swap 2048M
+sct_setup_swap_if_not_enabled() {
+    local swap_size="$1"
+    if [ -z "$swap_size" ]; then
+        echo "Usage: sct_setup_swap <size> (e.g., 2G or 2048M)"
+        return 1
+    fi
     if ! swapon --show | grep -q '^'; then
-        echo "No swap found. Creating 2GB swap file..."
-        fallocate -l 2G /swapfile || dd if=/dev/zero of=/swapfile bs=1M count=2048
+        echo "No swap found. Creating swap file of size $swap_size..."
+        fallocate -l "$swap_size" /swapfile || dd if=/dev/zero of=/swapfile bs=1M count=$(echo "$swap_size" | grep -oE '[0-9]+')
         chmod 600 /swapfile
         mkswap /swapfile > /dev/null
         swapon /swapfile
         echo '/swapfile none swap sw 0 0' >> /etc/fstab
         echo "Swap created and enabled."
     fi
+}
+
+# Start Docker containers using docker compose
+# Additional environment variables can be passed as arguments
+# Usage: start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
+sct_start_docker_compose_with_env_vars() {
+    echo -e "\nStarting Docker containers..."
+    env "$@" docker compose up -d --quiet-pull
 }
