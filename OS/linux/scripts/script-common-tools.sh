@@ -1,5 +1,5 @@
 # Check if the current script runs as root
-check_execution_user_is_root() {
+check_script_runs_as_root() {
     if [ "$EUID" -ne 0 ]; then
         echo "Please run this script as root"
         exit 1
