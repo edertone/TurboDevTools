@@ -111,6 +111,32 @@ Match User $USERNAME
     echo "User sftp '$USERNAME' created successfully."
 }
 
+# Prompt the user for a variable with a default value
+# Usage: USERNAME=$(sct_prompt_for_variable_or_default "Enter the username to create or return to use " "$DEFAULT_USERNAME")
+sct_prompt_for_variable() {
+    local prompt_message="$1"
+    local user_input
+
+    read -p "$prompt_message:" user_input
+    if [ -z "$user_input" ]; then
+        echo "ERROR: Input cannot be empty."
+        return 1
+    fi
+    echo "$user_input"
+}
+
+# Prompt the user for a variable with a default value
+# Usage: USERNAME=$(sct_prompt_for_variable_or_default "Enter the username to create or return to use " "$DEFAULT_USERNAME")
+sct_prompt_for_variable_or_default() {
+    local prompt_message="$2"
+    local default_value="$3"
+    local user_input
+
+    read -p "$prompt_message [$default_value]:" user_input
+    user_input=${user_input:-$default_value}
+    echo "$user_input"
+}
+
 # Start Docker containers using docker compose
 # Additional environment variables can be passed as arguments
 # Usage: sct_start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
