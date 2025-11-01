@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Enables immediate exit on error and sets a custom error trap
+# so that any error will print a message before exiting
+sct_enable_global_errors_handling() {
+    set -e
+    trap 'echo "An error occurred. Exiting..."; exit 1' ERR
+}
+
 # Check if the current script runs as root
 sct_script_must_run_as_root() {
     if [ "$EUID" -ne 0 ]; then
@@ -132,7 +139,7 @@ sct_prompt_for_variable_or_default() {
     local default_value="$2"
     local user_input
 
-    read -p "$prompt_message [$default_value]:" user_input
+    read -p "$prompt_message[$default_value]:" user_input
     user_input=${user_input:-$default_value}
     echo "$user_input"
 }
