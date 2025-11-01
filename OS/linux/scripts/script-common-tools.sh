@@ -158,7 +158,7 @@ sct_create_dir_if_missing_and_set_permisions() {
     chown -R "$userandgroup" "$dir" || { echo "ERROR: Failed to set ownership for $dir"; return 1; }
     chmod -R "$perm" "$dir" || { echo "ERROR: Failed to set permissions for $dir"; return 1; }
 
-    echo "Folder '$dir' created for '$userandgroup' (if not existing) and permissions set to '$perm'."
+    echo "Folder '$dir' assigned to '$userandgroup' and permissions set to '$perm'."
 }
 
 
@@ -177,7 +177,7 @@ sct_create_file_if_missing_and_set_permisions() {
     chown "$userandgroup" "$file" || { echo "ERROR: Failed to set ownership for $file"; return 1; }
     chmod "$perm" "$file" || { echo "ERROR: Failed to set permissions for $file"; return 1; }
 
-    echo "File '$file' created for '$userandgroup' (if not existing) and permissions set to '$perm'."
+    echo "File '$file' assigned to '$userandgroup' and permissions set to '$perm'."
 }
 
 
