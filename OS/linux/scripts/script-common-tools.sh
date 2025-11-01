@@ -111,8 +111,8 @@ Match User $USERNAME
     echo "User sftp '$USERNAME' created successfully."
 }
 
-# Prompt the user for a variable with a default value
-# Usage: USERNAME=$(sct_prompt_for_variable_or_default "Enter the username to create or return to use " "$DEFAULT_USERNAME")
+# Prompt the user for a variable (empty input is not allowed)
+# Usage: USERNAME=$(sct_prompt_for_variable "message")
 sct_prompt_for_variable() {
     local prompt_message="$1"
     local user_input
@@ -125,11 +125,11 @@ sct_prompt_for_variable() {
     echo "$user_input"
 }
 
-# Prompt the user for a variable with a default value
-# Usage: USERNAME=$(sct_prompt_for_variable_or_default "Enter the username to create or return to use " "$DEFAULT_USERNAME")
+# Prompt the user for a variable or return a default value if input is empty
+# Usage: USERNAME=$(sct_prompt_for_variable_or_default "message" "default-user")
 sct_prompt_for_variable_or_default() {
-    local prompt_message="$2"
-    local default_value="$3"
+    local prompt_message="$1"
+    local default_value="$2"
     local user_input
 
     read -p "$prompt_message [$default_value]:" user_input
