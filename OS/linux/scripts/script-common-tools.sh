@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if the current script runs as root
-check_script_runs_as_root() {
+sct_check_script_runs_as_root() {
     if [ "$EUID" -ne 0 ]; then
         echo "Please run this script as root"
         exit 1
@@ -9,7 +9,7 @@ check_script_runs_as_root() {
 }
 
 # Install Docker CE if not already installed
-install_docker() {
+sct_install_docker() {
     if ! command -v docker &> /dev/null; then
         echo "Installing Docker CE..."
         apt-get update > /dev/null
@@ -24,7 +24,7 @@ install_docker() {
 }
 
 # Setup 2GB swap file if no swap is present
-setup_swap() {
+sct_setup_swap() {
     if ! swapon --show | grep -q '^'; then
         echo "No swap found. Creating 2GB swap file..."
         fallocate -l 2G /swapfile || dd if=/dev/zero of=/swapfile bs=1M count=2048
