@@ -204,10 +204,4 @@ sct_start_docker_compose_with_env_vars() {
 
     echo -e "\n\nDocker containers launched. Status:"
     docker compose ps
-
-    # Unset the exported variables after use for security
-    for env_var in "$@"; do
-        var_name="${env_var%%=*}"
-        unset "$var_name"
-    done
 }
