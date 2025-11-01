@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Check if the current script runs as root
 check_script_runs_as_root() {
     if [ "$EUID" -ne 0 ]; then
