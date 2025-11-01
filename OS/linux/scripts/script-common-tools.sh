@@ -8,6 +8,17 @@ sct_script_must_run_as_root() {
     fi
 }
 
+# Verify the specified user exists or fail with a custom error message
+# Usage: sct_user_must_exist "username" "Custom error message"
+sct_user_must_exist() {
+    local username="$1"
+    local message="$2"
+    if ! id -u "$username" > /dev/null 2>&1; then
+        echo "ERROR: User '$username' does not exist. $message"
+        exit 1
+    fi
+}
+
 # Setup swap file if not present, with configurable size (e.g., 2G, 2048M)
 # Usage: sct_setup_swap 2G or sct_setup_swap 2048M
 sct_setup_swap_if_not_enabled() {
@@ -63,12 +74,12 @@ sct_start_docker_compose_with_env_vars() {
         return 1
     fi
 
+    echo -e "\n\nDocker containers launched. Status:"
+    docker compose ps
+
     # Unset the exported variables after use for security
     for env_var in "$@"; do
         var_name="${env_var%%=*}"
         unset "$var_name"
     done
-
-    echo -e "\n\nDocker containers launched. Status:"
-    docker compose ps
 }
