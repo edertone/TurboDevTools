@@ -46,17 +46,29 @@ sct_install_docker_if_not_exists() {
 # Additional environment variables can be passed as arguments
 # Usage: start_docker_compose_with_env_vars VAR1=value1 VAR2=value2 ...
 sct_start_docker_compose_with_env_vars() {
+    
+    # Export the provided environment variables
     echo -e "\nStarting Docker containers with env "
     for env_var in "$@"; do
         var_name="${env_var%%=*}"
         var_value="${env_var#*=}"
-        echo " $var_name = $var_value"
+        echo " $var_name=$var_value"
+        export "$var_name"="$var_value"
     done
-    if ! env "$@" docker compose up -d --quiet-pull > /dev/null; then
+
+    # Start Docker containers
+    if ! docker compose up -d --quiet-pull > /dev/null; then
         echo "Error: Failed to start Docker containers."
         docker compose logs
         return 1
     fi
+
+    # Unset the exported variables after use for security
+    for env_var in "$@"; do
+        var_name="${env_var%%=*}"
+        unset "$var_name"
+    done
+
     echo -e "\n\nDocker containers launched. Status:"
     docker compose ps
 }
